@@ -16,6 +16,7 @@
 #include "Properties/PersonIndexByLocationMovingLevelHandler.hxx"
 #include "ClonalParasitePopulation.h"
 #include "Helpers/UniqueId.hxx"
+#include "Therapies/SCTherapy.h"
 
 class Population;
 
@@ -30,8 +31,6 @@ class Genotype;
 class Event;
 
 class ParasiteDensityUpdateFunction;
-
-class Therapy;
 
 class DrugType;
 
@@ -118,7 +117,7 @@ class Person : public PersonIndexAllHandler, public PersonIndexByLocationStateAg
  PROPERTY_REF(int, number_of_times_bitten)
 
  PROPERTY_REF(int, number_of_trips_taken)
-  //    PROPERTY_REF(bool, is_tracking_treatment_number);
+
  PROPERTY_REF(int, last_therapy_id)
 
  PROPERTY_REF(std::vector<double>, prob_present_at_mda_by_age)
@@ -128,6 +127,9 @@ class Person : public PersonIndexAllHandler, public PersonIndexByLocationStateAg
 
   // The starting drug values given for a complex therapy
   std::map<int, double> starting_mac_drug_values;
+
+  // Get the number of days that the individual complied with the therapy
+  static int complied_dosing_days(const SCTherapy* therapy) ;
 
  public:
   Person();
@@ -141,12 +143,19 @@ class Person : public PersonIndexAllHandler, public PersonIndexByLocationStateAg
 
   ClonalParasitePopulation *add_new_parasite_to_blood(Genotype *parasite_type) const;
 
+  // Notify the individual of the change to the force of infection (FOI) for one of their parasite clones.
+  //
+  // Sign - positive to increment the global FOI, negative to decrement the global FOI
+  // blood_parasite_log_relative_density - The parasite density for a single parasite clone in the individual.
+  // log_total_relative_parasite_density - The total parasite density for all clones present in the individual
   virtual void notify_change_in_force_of_infection(const double &sign, const int &parasite_type_id,
                                                    const double &blood_parasite_log_relative_density,
                                                    const double &log_total_relative_parasite_density);
 
   virtual double get_biting_level_value();
 
+  // Calculate the infectivity of an arbitrary parasite population based upon the parasite density. This is based upon
+  // the calculations by Ross et al. (2006)
   virtual double relative_infectivity(const double &log10_parasite_density);
 
   virtual double get_probability_progress_to_clinical();
@@ -161,8 +170,6 @@ class Person : public PersonIndexAllHandler, public PersonIndexByLocationStateAg
 
   void change_all_parasite_update_function(ParasiteDensityUpdateFunction *from,
                                            ParasiteDensityUpdateFunction *to) const;
-
-  int complied_dosing_days(const int &dosing_day) const;
 
   void receive_therapy(Therapy *therapy, ClonalParasitePopulation *clinical_caused_parasite, bool is_mac_therapy = false);
 
@@ -237,6 +244,7 @@ class Person : public PersonIndexAllHandler, public PersonIndexByLocationStateAg
 
   ul_uid get_uid() { return _uid; }
 
+    void receive_therapy(SCTherapy *sc_therapy, bool is_mac_therapy);
 };
 
 #endif
