@@ -6,15 +6,15 @@
 
 # Overview
 
-This repository contains a frozen snapshot of the source code and intermediary files to accompany the manuscript by Zupko et al., which is currently in preperation. Due to the size of the intermedary data (285 MB, compressed) this repsitory uses [Git Large File Storage](https://git-lfs.github.com/) and may be limited in terms of bandwidth as a result. All studies run by the simuation use YAML files (in Studies) to provide the configuration and ASC files (in `Data/GIS`) for spaital data.
+This repository contains a frozen snapshot of the source code and intermediary files to accompany the manuscript by Zupko et al., which is currently in preparation. Due to the size of the intermediary data (486 MB, compressed) this repository uses [Git Large File Storage](https://git-lfs.github.com/) and may be limited in terms of bandwidth as a result. All studies run by the simulation use YAML files (in Studies) to provide the configuration and ASC files (in `Data/GIS`) for spatial data.
 
-Due to the complex nature of the simuation, [primary living documentation](https://github.com/rjzupkoii/PSU-CIDD-Malaria-Simulation) to build and run the simuation is hosted with the repository that contains active development. The version 4.1.1 code base was used to run the replicates used in manuscript revisions.
+Due to the complex nature of the simulation, [primary living documentation](https://github.com/rjzupkoii/PSU-CIDD-Malaria-Simulation) to build and run the simulation is hosted with the repository that contains active development. The version 4.1.1 code base was used to run the replicates used for the primary study replicates and version 4.1.2 was used to run the compliance study replicates.
 
 ---
 
 ## Organization
 
-Contents of the `Study` directory are organized in the following fashion:
+Contents of the `Study` directory are organized in the following fashion for the primary studies of the manuscript:
 
 | Type | Study Name | Filename |
 | --- | --- | --- |
@@ -56,6 +56,6 @@ Codename:       Maipo
 ---
 
 ### Original Repositories
-- Malaria Simulation, version 4.1.1: https://github.com/rjzupkoii/PSU-CIDD-Malaria-Simulation
-- Burkina Faso analysis and plots: https://github.com/rjzupkoii/PSU-CIDD-Rwanda
+- Malaria Simulation, versions 4.1.1, 4.1.2: https://github.com/rjzupkoii/PSU-CIDD-Malaria-Simulation
+- Rwanda analysis and plots: https://github.com/rjzupkoii/PSU-CIDD-Rwanda
 - Support scripts and infrastructure: https://github.com/bonilab/PSU-CIDD-MaSim-Support
