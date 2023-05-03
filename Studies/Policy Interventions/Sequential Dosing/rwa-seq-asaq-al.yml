@@ -2,7 +2,8 @@
 #
 # Boni Lab
 #
-# Multiple first-line therapies scenario, ASAQ and DHA-PPQ
+# Sequential dosing of ACT, based on Arm 3 of Schallig et al. 2017
+# ASAQ followed by AL (3-day)
 #
 # ---------------------------------------------------------------
 
@@ -228,14 +229,14 @@ events:
     info:
       - day: 2024/1/1
         strategy_id: 1
-        
+
   - name: introduce_mutant_event
     info:
       - day: 2004/09/30
         district: 8                 # Gasabo
         fraction: 0.06
         locus: 2
-        mutant_allele: 1  
+        mutant_allele: 1
   - name: update_beta_raster_event
     info: 
       - day: 2021/01/01
@@ -394,7 +395,7 @@ drug_db:
     k: 4
     EC50:
       ...0.: 0.58
-      ...1.: 1.4      
+      ...1.: 1.4
          
 # Drug IDs for the model
 artemisinin_drug_id: 0
@@ -416,11 +417,15 @@ therapy_db:
   2:
     drug_id: [2]
     dosing_days: [7]
-
   # ACT - artesunate–amodiaquine (ASAQ)
   3:
     drug_id: [0, 3]
-    dosing_days: [3]     
+    dosing_days: [3]
+
+  # Sequence therapy, ASAQ then AL (3-3)
+  4:
+    therapy_ids: [3, 0]
+    regimen: [1, 4]
   
 # Drug-deployment strategy - baseline represents the survey data for Rwanda
 # 
@@ -432,9 +437,9 @@ strategy_db:
     therapy_ids: [ 0 ]
     distribution: [ 1 ]
   1:
-    name: Rwanda-ASAQ
+    name: Rwanda-Sequence
     type: MFT
-    therapy_ids: [ 3 ]    
+    therapy_ids: [ 4 ]
     distribution: [ 1 ]
 initial_strategy_id: 0
 
