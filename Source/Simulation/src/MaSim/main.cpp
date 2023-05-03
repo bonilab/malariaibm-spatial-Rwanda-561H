@@ -29,7 +29,7 @@ namespace {
 #endif
 
 // Version information
-const std::string VERSION = "4.1.2";
+const std::string VERSION = "4.1.4";
 
 // Settings read from the CLI
 int job_number = 0;
@@ -103,11 +103,17 @@ int main(const int argc, char **argv) {
     config_logger();
     START_EASYLOGGINGPP(argc, argv);
     LOG(INFO) << fmt::format("MaSim version {0}", VERSION);
-    LOG(INFO) << "Processor Count: " << std::thread::hardware_concurrency();
+    VLOG(1) << "Processor Count: " << std::thread::hardware_concurrency();
+    VLOG(1) << "Physical: " << OsHelpers::getPhysicalMemoryUsed() << " Kb";
+    VLOG(1) << "Virtual: " << OsHelpers::getVirtualMemoryUsed() << " Kb";
 
     // Run the model
     m->initialize(job_number, path);
     m->run();
+
+    // Report final memory usage
+    LOG(INFO) << fmt::format("Memory used: {0} Kb physical, {1} Kb virtual",
+                             OsHelpers::getPhysicalMemoryUsed(), OsHelpers::getVirtualMemoryUsed());
 
     // Clean-up and return
     delete m;
@@ -185,10 +191,14 @@ void handle_cli(Model *model, int argc, char **argv) {
     exit(EXIT_FAILURE);
   }
 
-  // Check for the existence of the input file, exit if it doesn't exist.
+  // Verify that the input file seems okay, exit if it isn't
   const auto input = input_file ? args::get(input_file) : "input.yml";
   if (!OsHelpers::file_exists(input)) {    
     LOG(ERROR) << fmt::format("File {0} does not exists. Rerun with -h or --help for help.", input);
+    exit(EXIT_FAILURE);
+  }
+  if (input.find(".yml") == std::string::npos && input.find(".yaml") == std::string::npos) {
+    LOG(ERROR) << fmt::format("File {0} does not appear to be a YAML file", input);
     exit(EXIT_FAILURE);
   }
   model->set_config_filename(input);

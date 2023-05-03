@@ -38,8 +38,9 @@ void CellularReporter::initialize(int job_number, std::string path) {
        << "ClinicalIndividuals" << Csv::sep 
        << "ClinicalU5" << Csv::sep
        << "ClinicalO5" << Csv::sep
-       << "NewInfections" << Csv::sep 
-       << "NonTreatment" << Csv::sep 
+       << "NewInfections" << Csv::sep
+       << "Treatment" << Csv::sep
+       << "NonTreatment" << Csv::sep
        << "TreatmentFailure" << Csv::sep
        << "ParasiteClones" << Csv::sep 
        << "Theta" << Csv::sep       
@@ -145,20 +146,26 @@ void CellularReporter::monthly_report() {
     // Note some values
     auto clinical_all = Model::DATA_COLLECTOR->monthly_number_of_clinical_episode_by_location()[0];
     auto clinical_u5 = 0;
-    for (auto ndx = 0; ndx < 5; ndx++) {
-        clinical_u5 += Model::DATA_COLLECTOR->number_of_clinical_by_location_age_group()[0][ndx];
+    for (auto ndx = 0; ndx < Model::CONFIG->number_of_age_classes(); ndx++) {
+        // Check to see if we are still under five in the age structure
+        if (Model::CONFIG->age_structure()[ndx] > 5) {
+            break;
+        }
+
+        clinical_u5 += Model::DATA_COLLECTOR->monthly_number_of_clinical_episode_by_location_age_class()[0][ndx];
     }
 
     // Store the data
     ss << Model::SCHEDULER->current_time() << Csv::sep
        << population << Csv::sep 
        << Model::DATA_COLLECTOR->get_blood_slide_prevalence(0, 2, 10) * 100.0 << Csv::sep
-       << Model::TREATMENT_COVERAGE->p_treatment_less_than_5[0] << Csv::sep
+       << (Model::TREATMENT_COVERAGE->p_treatment_less_than_5[0] + Model::TREATMENT_COVERAGE->p_treatment_more_than_5[0]) / 2 << Csv::sep
        << infectedIndividuals << Csv::sep 
        << clinical_all << Csv::sep
        << clinical_u5 << Csv::sep
        << (clinical_all - clinical_u5) << Csv::sep
        << Model::DATA_COLLECTOR->monthly_number_of_new_infections_by_location()[0] << Csv::sep
+       << Model::DATA_COLLECTOR->monthly_number_of_treatment_by_location()[0] << Csv::sep
        << Model::DATA_COLLECTOR->monthly_nontreatment_by_location()[0] << Csv::sep
        << Model::DATA_COLLECTOR->monthly_treatment_failure_by_location()[0] << Csv::sep
        << parasiteClones << Csv::sep
@@ -275,7 +282,7 @@ void CellularReporter::detailed_report() {
                 }
 
                 // Sort the list and update the indicators for this individual, note that there should 
-                // only be one occurrance of a specific genotype in the individual due to clones
+                // only be one occurrence of a specific genotype in the individual due to clones
                 genotype_ids.sort();
                 for (int count = 0; count < genotypes; count++) {
                     if (genotype_ids.front() == count) {

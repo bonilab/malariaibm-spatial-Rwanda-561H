@@ -16,11 +16,9 @@
 #include "ImmuneSystem.h"
 #include "Model.h"
 #include "Core/Config/Config.h"
-#include "Core/Scheduler.h"
 #include "SingleHostClonalParasitePopulations.h"
 #include "Events/ProgressToClinicalEvent.h"
 #include "ClonalParasitePopulation.h"
-#include "Events/EndClinicalDueToDrugResistanceEvent.h"
 #include "Events/TestTreatmentFailureEvent.h"
 #include "Therapies/SCTherapy.h"
 #include "Therapies/DrugType.h"
@@ -36,7 +34,6 @@
 #include "Events/ReturnToResidenceEvent.h"
 #include "Events/CirculateToTargetLocationNextDayEvent.h"
 #include "MDC/ModelDataCollector.h"
-#include "Events/BirthdayEvent.h"
 #include "Therapies/MACTherapy.h"
 #include "Events/ReceiveTherapyEvent.h"
 #include "Constants.h"
@@ -60,7 +57,6 @@ Person::Person() :
   today_infections_ = nullptr;
   today_target_locations_ = nullptr;
   latest_update_time_ = -1;
-
 }
 
 void Person::init() {
@@ -148,7 +144,7 @@ void Person::set_age(const int &value) {
 
     NotifyChange(AGE, &age_, &value);
 
-    // update bitting rate level
+    // update biting rate level
     age_ = value;
 
     //update age class
@@ -159,7 +155,7 @@ void Person::set_age(const int &value) {
         ac++;
       }
 
-      set_age_class(ac);
+      set_age_class((int)ac);
     }
   }
 }
@@ -191,7 +187,7 @@ void Person::set_bitting_level(const int &value) {
   if (bitting_level_ != new_value) {
     all_clonal_parasite_populations_->remove_all_infection_force();
 
-    NotifyChange(BITTING_LEVEL, &bitting_level_, &new_value);
+    NotifyChange(BITING_LEVEL, &bitting_level_, &new_value);
     bitting_level_ = new_value;
     all_clonal_parasite_populations_->add_all_infection_force();
   }
@@ -210,17 +206,6 @@ void Person::set_moving_level(const int &value) {
 
 void Person::increase_age_by_1_year() {
   set_age(age_ + 1);
-}
-
-ImmuneSystem* Person::immune_system() const {
-  return immune_system_;
-}
-
-void Person::set_immune_system(ImmuneSystem* value) {
-  if (immune_system_ != value) {
-    delete immune_system_;
-    immune_system_ = value;
-  }
 }
 
 ClonalParasitePopulation* Person::add_new_parasite_to_blood(Genotype* parasite_type) const {
@@ -252,7 +237,6 @@ void Person::notify_change_in_force_of_infection(const double &sign, const int &
 }
 
 double Person::get_biting_level_value() {
-
   return Model::CONFIG->relative_bitting_info().v_biting_level_value[bitting_level_];
 }
 
@@ -271,24 +255,20 @@ double Person::get_probability_progress_to_clinical() {
 void Person::cancel_all_other_progress_to_clinical_events_except(Event* event) const {
   for (auto* e : *events()) {
     if (e != event && dynamic_cast<ProgressToClinicalEvent*>(e) != nullptr) {
-      //            std::cout << "Hello"<< std::endl;
       e->executable = false;
     }
   }
 }
 
 void Person::cancel_all_events_except(Event* event) const {
-
   for (auto* e : *events()) {
     if (e != event) {
-      //            e->set_dispatcher(nullptr);
       e->executable = false;
     }
   }
 }
 
-void
-Person::change_all_parasite_update_function(ParasiteDensityUpdateFunction* from,
+void Person::change_all_parasite_update_function(ParasiteDensityUpdateFunction* from,
                                             ParasiteDensityUpdateFunction* to) const {
   all_clonal_parasite_populations_->change_all_parasite_update_function(from, to);
 }
@@ -299,7 +279,7 @@ bool Person::will_progress_to_death_when_receive_no_treatment() {
   return p <= Model::CONFIG->mortality_when_treatment_fail_by_age_class()[age_class_];
 }
 
-bool Person::will_progress_to_death_when_recieve_treatment() {
+bool Person::will_progress_to_death_when_receive_treatment() {
   //yes == death
   double P = Model::RANDOM->random_flat(0.0, 1.0);
   // 90% lower than no treatment
@@ -464,13 +444,8 @@ void Person::schedule_end_clinical_by_no_treatment_event(ClonalParasitePopulatio
 void Person::change_state_when_no_parasite_in_blood() {
   if (all_clonal_parasite_populations_->size() == 0) {
     if (liver_parasite_type_ == nullptr) {
-      //        std::cout << "S" << std::endl;
-      //        std::cout << host_state_<< std::endl;
       set_host_state(SUSCEPTIBLE);
-      //        std::cout << "ES" << std::endl;
-
     } else {
-
       set_host_state(EXPOSED);
     }
     immune_system_->set_increase(false);
@@ -482,7 +457,6 @@ void Person::determine_relapse_or_not(ClonalParasitePopulation* clinical_caused_
     const auto p = Model::RANDOM->random_flat(0.0, 1.0);
 
     if (p <= Model::CONFIG->p_relapse()) {
-      //        if (P <= get_probability_progress_to_clinical()) {
       //progress to clinical after several days
       clinical_caused_parasite->set_update_function(Model::MODEL->progress_to_clinical_update_function());
       clinical_caused_parasite->set_last_update_log10_parasite_density(
@@ -506,11 +480,6 @@ void Person::determine_clinical_or_not(ClonalParasitePopulation* clinical_caused
   if (all_clonal_parasite_populations_->contain(clinical_caused_parasite)) {
     const auto p = Model::RANDOM->random_flat(0.0, 1.0);
 
-    //        if (P <= Model::CONFIG->p_relapse()) {
-//    if (Model::SCHEDULER->current_time() >= 2000 && Model::SCHEDULER->current_time() <= 2010)
-//      std::cout << this->age() << "\t" << this->immune_system()->get_current_value() << "\t"
-//                << get_probability_progress_to_clinical()
-//                << std::endl;
     if (p <= get_probability_progress_to_clinical()) {
       //progress to clinical after several days
       clinical_caused_parasite->set_update_function(Model::MODEL->progress_to_clinical_update_function());
@@ -536,68 +505,54 @@ void Person::schedule_relapse_event(ClonalParasitePopulation* clinical_caused_pa
 }
 
 void Person::update() {
-  //    std::cout << "Person Update"<< std::endl;
-  //already update
+  // Make sure we haven't already updated
   assert(host_state_ != DEAD);
-
   if (latest_update_time_ == Model::SCHEDULER->current_time()) return;
 
-  //    std::cout << "ppu"<< std::endl;
-  ///update the density of each blood parasite in parasite population
-  // parasite will be kill by immune system
+  // Start by updating the density of each blood parasite in parasite population,
+  // parasite will be killed by immune system
   all_clonal_parasite_populations_->update();
 
-  //    std::cout << "dibu"<< std::endl;
-  //update all drugs concentration
+  // Update the drug concentration, then apply this to the parasite(s) present
   drugs_in_blood_->update();
-
-  //update drug activity on parasite
   all_clonal_parasite_populations_->update_by_drugs(drugs_in_blood_);
 
-  //    std::cout << "imm"<< std::endl;
+  // Update the individual immune system
   immune_system_->update();
 
-  //    std::cout << "csu"<< std::endl;
+  // Update the overall state
   update_current_state();
 
-  //    Dispatcher::update();
+  // Update biting level only less than 1 to save performance, the other will be update in birthday event
+  update_biting_level();
 
-  //update bitting level only less than 1 to save performance
-  // the other will be update in birthday event
-  update_bitting_level();
-
+  // Set the current time for bookkeeping
   latest_update_time_ = Model::SCHEDULER->current_time();
-  //    std::cout << "End Person Update"<< std::endl;
 }
 
-void Person::update_bitting_level() {
+void Person::update_biting_level() {
   if (Model::CONFIG->using_age_dependent_bitting_level()) {
 
     //TODO: test here
-    const auto new_bitting_level_value = base_bitting_level_value_ * get_age_dependent_biting_factor();
-    const auto diff_in_level = static_cast<int>(std::floor(new_bitting_level_value - get_biting_level_value()) /
+    const auto new_biting_level_value = base_bitting_level_value_ * get_age_dependent_biting_factor();
+    const auto diff_in_level = static_cast<int>(std::floor(new_biting_level_value - get_biting_level_value()) /
                                                 ((Model::CONFIG->relative_bitting_info().max_relative_biting_value -
                                                   1) /
                                                  static_cast<double>(
                                                    Model::CONFIG->relative_bitting_info().number_of_biting_levels -
                                                    1)));
     if (diff_in_level != 0) {
-      //            std::cout << bitting_level_ << "\t" << diff_in_level << std::endl;
       set_bitting_level(bitting_level_ + diff_in_level);
-      //              std::cout << "ok" << std::endl;
     }
   }
 }
 
 void Person::update_current_state() {
-  //    std::cout << "ccod" << std::endl;
   //clear drugs <=0.1
   drugs_in_blood_->clear_cut_off_drugs_by_event(nullptr);
-  //    std::cout << "ccp" << std::endl;
   //clear cured parasite
   all_clonal_parasite_populations_->clear_cured_parasites();
 
-  //    std::cout << "change state" << std::endl;
   if (all_clonal_parasite_populations_->size() == 0) {
     change_state_when_no_parasite_in_blood();
   } else {
@@ -635,7 +590,6 @@ void Person::infected_by(const int &parasite_type_id) {
     //move parasite to blood in next 7 days
     schedule_move_parasite_to_blood(genotype, 7);
   }
-
 }
 
 // Inflict a bite upon the person with sporozoites of the given type being
@@ -667,7 +621,7 @@ bool Person::inflict_bite(const unsigned int parasite_type_id) {
   const double draw = Model::RANDOM->random_flat(0.0, 1.0);
   if (draw < pr_inf) {
     if (host_state() != Person::EXPOSED && liver_parasite_type() == nullptr) {
-      today_infections()->push_back(parasite_type_id);
+      today_infections()->push_back((int)parasite_type_id);
       return true;
     }
   }
@@ -699,11 +653,11 @@ void Person::randomly_choose_target_location() {
     return;
   }
 
-  auto target_location{-1};
+  int target_location;
   if (today_target_locations_->size() == 1) {
     target_location = today_target_locations_->at(0);
   } else {
-    const int index_random_location = Model::RANDOM->random_uniform(today_target_locations_->size());
+    const int index_random_location = (int)Model::RANDOM->random_uniform(today_target_locations_->size());
     target_location = today_target_locations_->at(index_random_location);
   }
 
@@ -754,33 +708,6 @@ void Person::increase_number_of_times_bitten() {
   }
 }
 
-void Person::move_to_population(Population* target_population) {
-  assert(population_ != target_population);
-
-  population_->remove_person(this);
-  target_population->add_person(this);
-}
-
-bool Person::has_birthday_event() const {
-
-  for (Event* e : *events()) {
-    if (dynamic_cast<BirthdayEvent*>(e) != nullptr) {
-      return true;
-    }
-  }
-  return false;
-}
-
-bool Person::has_update_by_having_drug_event() const {
-
-  for (Event* e : *events()) {
-    if (dynamic_cast<UpdateWhenDrugIsPresentEvent*>(e) != nullptr) {
-      return true;
-    }
-  }
-  return false;
-}
-
 double Person::get_age_dependent_biting_factor() const {
   //
   //0.00 - 0.25  -  6.5
@@ -816,10 +743,6 @@ double Person::get_age_dependent_biting_factor() const {
   return 1.0;
 }
 
-double Person::p_infection_from_an_infectious_bite() const {
-  return (1 - immune_system_->get_current_value()) / 8.333 + 0.04;
-}
-
 bool Person::isGametocytaemic() const {
   return all_clonal_parasite_populations_->is_gametocytaemic();
 }
@@ -837,7 +760,6 @@ void Person::generate_prob_present_at_mda_by_age() {
 
 double Person::prob_present_at_mda() {
   std::size_t i = 0;
-  // std::cout << "hello " << i << std::endl;
   while (age_ > Model::CONFIG->age_bracket_prob_individual_present_at_mda()[i]
          && i < Model::CONFIG->age_bracket_prob_individual_present_at_mda().size()) {
     i++;
