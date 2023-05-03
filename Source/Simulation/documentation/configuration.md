@@ -1,28 +1,51 @@
 
 # MaSim Configuration File
+<!-- Note that we presume this will mostly be viewed on GitHub, so TeX and LaTeX is used in some places for rendering equations. Visual Studio Code will also render correctly, but support is uneven on other IDEs. -->
 
 # Introduction
 
 The malaria simulation (MaSim) uses [YAML](https://yaml.org/) to load configuration settings for the simulation. While the configuration was previously forward compatible (i.e., older files would work with newer versions), with the transition to version 4.0 new nodes were added or deprecated that have resulted in a divergence between 3.x and 4.0 onwards. While the absence of nodes implies version 4.0 or greater, care should be taken to ensure it is clear which version a given configuration is intended for.
 
-As a matter of convention, the YAML key is generally indicated with **bold** text. The data type (e.g., integer, string, etc.) or the possible values are indicated in parentheses following the key name. If there is a default value, then it will be given in _italic_ text. Generally this document is organized such that keys are organized by operational impact upon the simulation, followed by simple key-value pairs as the first entry in each section, followed by more complex entities as subheadings.   
+As a matter of convention, the YAML key is generally indicated with **bold** text. The data type (e.g., integer, string, etc.) or the possible values are indicated in parentheses following the key name with any default indicated in **bold**. Generally this document is organized such that headings are organized by operational impact upon the simulation, followed by simple key-value pairs as the first entry in each section, followed by more complex entities as subheadings. Within subsections, the YAML keys should be in alphabetical order, although closely coupled keys (e.g., `number_of_age_classes` and `age_structure`) will break this pattern with the first key that should be read appearing first.
 
 # Nodes
 
-## Model Operation Nodes 
-The following nodes govern how the model executes at a low level.
+## Model Operation 
+The following nodes govern how the model executes in terms of simulation execution.
 
 **connection_string** (string) : (*Version 4.0*) The connection string for the PostgreSQL database that stores the simulation data.
 
+**days_between_notifications** (integer) : The number of model days that should elapse between status updates to the console.
+
 **record_genome_db** (boolean) : (*Version 4.0*) Indicates that genome data should be recorded to the database when using the `DbReporter` reporter class. Note that recording genomic data to the database will cause the database to quickly inflate in size. It is recommended that this setting only be used when genomic data needs to be retrieved. 
 
-## Model Configuration Notes
+## Model Configuration
 The following nodes contain the settings for the simulation.
 
-**transmission_parameter** (float) : Governs how likely malaria is to be transmitted to a naive individual in the sporozoite challenge.
+**artificial_rescaling_of_population_size** (double) : A scaling value that should be applied to the population size in a given location. Defaults to 1.0, but 0.25 is commonly applied when geospatial data is used that maps locations to current populations. 
+
+**birth_rate** (float) : The number of births per thousand individuals in the simulation, expressed as a decimal (i.e., 42 births per 1000 is entered as 0.042).
+
+**initial_age_structure** (integer array) : Used to initialize the population structure at model initialization (time zero).
+
+**initial_seed_number** (integer) : The seed value that should be used by the random number generator. The default value of zero (0) indicates that the seed will be generated at model execution time based upon the number of milliseconds since the [Unix epoch](https://en.wikipedia.org/wiki/Unix_time).
 
 **number_of_age_classes** (integer) : The size of the `age_structure` array.\
-**age_structure** : An array of integer values that corresponds to the oldest age that defines a break in the age structure.
+**age_structure** (integer array) : An array of integer values that corresponds to the oldest age that defines a break in the age structure. This age structure is used for reporting and age-specific mortality calculations.\
+**death_rate_by_age_class** (float array) : A float array of values that corresponds to the all-causes death rate for the simulation withe same index correspondence as `age_structure`. Typically supplied as a malaria adjusted value.\
+**mortality_when_treatment_fail_by_age_class** (float array) : A float array of values that corresponds to the death rate when treatment fails, using the same index correspondence as `age_structure`.
+
+**number_of_tracking_days** (integer) : The number of days to take the total number of parasites in the population. 
+
+**report_frequency** (integer) : The number of model days that various reporters will save data, and data aggregation events will trigger.
+
+**start_collect_data_day** (integer) : The number of model days that should elapse before data collection begins (e.g., number of clinical episodes, number of deaths, etc.)
+
+<!-- Double check the NFT code to see how that is being done! -->
+**start_of_comparison_period** (date string, YYYY/mm/dd) : The calendar date upon which the simulation should start calculating the number of treatment failures (NTF), artemisinin monotherapy usage (AMU), and useful therapeutic life (UTL). Note that as of version 4.0 the AMU results are considered to be *deprecated* and will be removed at a later date.
+
+**starting_date** (date string, YYYY/mm/dd) : The start date of the simulation, model days elapsed will be indexed from this date.\
+**ending_date** (date string, YYYY/mm/dd) : The end date of the simulation.
 
 ## Simulation Geography
 
@@ -74,7 +97,7 @@ To Be Written.
 ### seasonal_info 
 This setting governs the malaria season in the model and operates differently depending upon the setting and version of the simulation.
 
-Under previous versions and 4.1.0 and higher, an equation based model seasonal variation in transmission is provided where parameters must be fit to the following equation: multiplier = base + (a * sin<sup>+</sup>(b * π * (t - φ) / 365))
+Under previous versions and 4.1.0 and higher, an equation based model seasonal variation in transmission is provided where parameters must be fit to the following equation: $multiplier = base + \left (a \cdot sin^+\left ( \frac{b \cdot \pi \cdot (t - \phi)}{365} \right ) \right )$
 
 Once the equation is fit, the YAML can then be written as follows:
 
@@ -84,10 +107,10 @@ seasonal_info:
   mode: equation
   equation:
     raster: false
+    base: [0.0]
     a: [0.0]
+    b: [0.0]
     phi: [0.0]
-    min_value: [0.0]
-    period: 365
 ```
 
 **mode** (**equation** | rainfall) : (*Optional*) indicates the node that should be used for the seasonality, namely based upon the equation based model, or by using rainfall data. In the event that a value is not supplied, the simulation will default to the equation based model.\  
@@ -113,9 +136,14 @@ seasonal_info:
 **filename** (string) : The CSV file that contains the adjustment that should be applied to the beta. Each adjustment should be supplied on a single line in the file.\
 **period** (integer) : The period of time before the pattern in the CSV file should repeat, generally 365 days is expected.
 
+### spatial_model
+To Be Written.
+
 ## Individual Immunity and Infection Response
 
-**allow_new_coinfection_to_cause_symtoms** (_true_ | false) : Flag to indicate if an asymptomatic host that is bitten and infected by a new parasite clone may present with new symptoms. Note the spelling of `symtoms` in the configuration.\
+**allow_new_coinfection_to_cause_symtoms** (_true_ | false) : Flag to indicate if an asymptomatic host that is bitten and infected by a new parasite clone may present with new symptoms. Note the spelling of `symtoms` in the configuration.
+
+**transmission_parameter** (float) : Governs how likely malaria is to be transmitted to a naive individual in the sporozoite challenge.
 
 ### parasite_density_level
 The `parasite_density_level` setting contains several sub-values that govern individual behavior or state due to the total number of parasites that are present in the individual's blood stream. When setting the parasite density for the detectable levels note that 10 per μl is the middle of the bounds for detection under [Giemsa-stained thick blood film](https://apps.who.int/iris/bitstream/handle/10665/274382/MM-SOP-07a-eng.pdf) under laboratory conditions (4 - 20 parasites/μl) while 50 per μl is the lower bounds for detection under field conditions (50 - 100 parasites/μl) ([Wongsrichanalai et al. 2007](#Wongsrichanalai2007)). Generally, a higher detection limit for the <em>Pf</em>PR will require a higher transmission for a given <em>Pf</em>PR than a lower detection level. 
@@ -240,25 +268,61 @@ therapy_db:
     therapy_ids: [0, 1]
     regimen: [1, 5]
 
-  # Artemisinin combination therapy (ACT) - artemether–lumefantrine (AL), five days with specified compliance
+  # Drug compliance configuration: AL, five days with specified compliance
   3:
     drug_id: [0, 1]
     dosing_days: [5]
     # Probability that an individual will complete exactly this many days of treatment
     pr_completed_days: [0.1, 0.1, 0.2, 0.2, 0.4]
+
+  # Targeted intervention configuration: AL, but only in districts 1 and 3
+  4:
+    drug_id: [0, 1]
+    dosing_days: [3]
+    districts: [1, 3]
+
+  # Targeted intervention configuration: AL (3-1-1), but only in district 2
+  5:
+    therapy_ids: [0, 1]
+    regime: [1, 5]
+    districts: [2]
 ```
 
 ***Simple Therapies*** \
 **drug_id** (integer array) : One or more integers that correspond to the defined identification numbers (i.e., array index) in the `drug_db`. \
 **dosing_days** (integer) : The number of days that the drug combination should be given for. \
-**pr_completed_days** (float array) : (*Optional, Version 4.1.2*) The probability that the individual will comply with the course of treatment where 1 indicates they will always take it; otherwise, 0 < _n_ < 1 is the probability that they will stop on that day. In the event that the field is not supplied then it is assumed that the individual will always comply with the therapy.
+**pr_completed_days** (float array) : (*Optional, Version 4.1.2*) The probability that the individual will comply with the course of treatment where 1 indicates they will always take it; otherwise, 0 < _n_ < 1 is the probability that they will stop on that day. In the event that the field is not supplied then it is assumed that the individual will always comply with the therapy. \
+**districts** (integer array) : (*Optional, Version 4.1.5*) The ids of the districts in which the therapy should be applied. If nothing is supplied then the default is all districts. However, if something is supplied then the individual must be present in that district to have a chance at receiving the therapy.  
 
 ***Complex Therapies*** \
 Complex therapies consist of multiple simple therapies that are dosed over several days and may contain gaps in the dosing. Prior to Version 4.1.1 patient compliance with the therapy was determined by the `p_compliance` which generally assumed full compliance with the course of treatment. With complex therapies, noncompliance is currently not support and such configurations will produce an error.  
 
 **therapy_ids** (integer array) : One or more integers that correspond to the defined therapies. \
-**regimen** (integer array) : A one-index list of the days that the corresponding therapy should be given.
+**regimen** (integer array) : A one-index list of the days that the corresponding therapy should be given. \
+**districts** (integer array) : (*Optional, Version 4.1.5*) The ids of the districts in which the therapy should be applied. If nothing is supplied then the default is all districts. However, if something is supplied then the individual must be present in that district to have a chance at receiving the therapy.
 
+## Policy Interventions
+While most of the policy interventions can be implemented using the therapies deployed, and switching them via events such as `change_treatment_strategy`, some of the more complex strategies require more in-depth configuration or are closely coupled with how the simulation operates.
+
+### Regular administration of prophylactic therapy (version 4.1.3)
+The regular administration of prophylactic therapy, or RAPT protocol, is a speculative approach to malaria control that calls for individual to take an artemisinin combination therapy (ACT) periodically without the presentation of clinical symptoms for malaria. The protocol presumes an individual will remember the month to take then next ACT, and at some point during that month a check will be performed to see if they take the therapy. The probability is based upon the probability that an individual in their age group will seek treatment and the probability of compliance with the RAPT protocol (i.e., $Pr(RAPT) = Pr(Treatment) \cdot Pr(Compliance)$ ). In the event that the individual already took an ACT in the past 28 days (determined by checking for `TestTreatmentFailureEvent`), they will not take the ACT regardless.
+
+Implementation of this protocol requires that events be scheduled for at model initialization, although the point at which the individuals start taking the ACTs is determined by the configuration. Due to the computational overhead involved with the RAPT protocol, the simulation execution time is longer. If the `rapt_config` entry is not present in the configuration file, the event will not be enabled within the simulation.
+
+```YAML
+rapt_config:
+  period: 12
+  therapy_id: 1
+  compliance: 0.7
+  age_start: 18
+  start_day: 2022/08/18
+```
+
+**period** (int): the interval, in months, between RAPT doses. \
+**therapy_id** (int): corresponds to id of the treatment defined in the `therapy_db` to take. \
+**compliance** (float): the probability that the individual will comply with the RAPT protocol. \
+**age_start** (int): the age, in years, that the individual will start checking for compliance with the RAPT protocol. \
+**start_day** (date string, YYYY/mm/dd): the date at which the RAPT protocol will take effect, after this date, individuals will start checking for compliance. 
 
 ## Genotype Information
 
@@ -269,7 +333,7 @@ To Be Written.
 This setting is used to list the various events that will be loaded and run during the model. The `name` field dictates which event will be parsed and all the data for the `info` field following will be provided to the loader function.
 
 ### annual_beta_update_event
-(*Version 4.0*) The annual beta update event increases or decreases the beta for each cell in the model using the formula `beta' = beta + (beta * rate)` and clamps the lower bounds for the beta a zero. 
+(*Version 4.0*) The annual beta update event increases or decreases the beta for each cell in the model using the formula $beta' = beta + (beta \cdot rate)$ and clamps the lower bounds for the beta a zero. 
 
 ```YAML
 events:
@@ -365,6 +429,20 @@ events:
 **day** (date string, YYYY/mm/dd) : the date when the event will occur. \
 **drug_id** (integer) : the id of the drug, as defined in the `drug_db` or `-1` to apply the value to all drugs. \
 **mutation_probability** (float) : the mutation probability to use.
+
+### update_beta_raster_event
+(*Version 4.1.4*) Update all beta values in the simulation to those in the raster file.
+
+```YAML
+events:
+  - name: update_beta_raster_event
+    info:
+      - day: 2023/02/24
+        beta_raster: "beta_2023.asc" 
+```
+
+**day** (date string, YYYY/mm/dd) : the date when the event will occur. \
+**beta_raster** (string) : The beta parameter (float) used for each cell in the model, overrides the current value in the cell. \
 
 ### update_ecozone_event
 (*Version 4.0*) Update all the cells matching the original ecozone to the new ecozone.
