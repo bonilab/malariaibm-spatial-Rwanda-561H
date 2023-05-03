@@ -19,14 +19,46 @@ sys.path.insert(1, '../../PSU-CIDD-MaSim-Support/Python/include')
 from plotting import scale_luminosity
 from utility import progressBar
 
-def main():
-    print('Generating spiking plots...')
-    plot_spikes('rwa-spike.csv', 'png')
+def main(extension):
+    root = '../Analysis/ms_data/'
+    filenames = [
+        '2024/datasets/rwa-pfpr-constant.csv',
+        'sensitivity/rwa-movement-0.3x.csv',
+        'sensitivity/rwa-movement-0.5x.csv',
+        'sensitivity/rwa-movement-2x.csv',
+        'sensitivity/rwa-movement-3x.csv',
+        'sensitivity/rwa-fitness-10x.csv',
+        'sensitivity/rwa-fitness-25x.csv',
+        'sensitivity/rwa-fitness-50x.csv'
+    ]
 
-    for filename in rwanda.CONFIGURATIONS:
-        print('Parsing {} ...'.format(filename))
-        results = prepare(os.path.join('../Analysis/data/datasets', filename))
-        report(rwanda.CONFIGURATIONS[filename], *results)    
+    os.makedirs('plots', exist_ok=True)
+
+    for filename in filenames:
+        # Prepare the filenames
+        prefix = 'Movement'; suffix = 'movement rate'
+        if 'constant' in filename:
+            rate = '1x'
+            title = 'National 561H Frequency'
+        elif 'movement' in filename:
+            rate = filename[25:].replace('.csv', '')
+            title = 'National 561H Frequency with {} Increase in Movement'.format(rate)
+        else:
+            rate = filename[24:].replace('.csv', '')
+            prefix = 'Fitness'
+            suffix = 'fitness penalty'
+            title = 'National 561H Frequency with {} Increase in Fitness Penalty'.format(rate)
+
+        # Verify that the file exists
+        filename = os.path.join(root, filename)
+        if not os.path.exists(filename): continue
+        print('Preparing {} plots...'.format(rate))
+
+        # Start by preparing the national summary plot
+        rwanda.plot_validation(filename, 'plots/{} Sensitivity - {}.{}'.format(prefix, rate, extension), title=title)
+
+        # Now prepare the district spiking plot
+        plot_spikes(filename, rate, prefix, suffix, extension)
 
 
 def prepare(filename):
@@ -49,7 +81,7 @@ def prepare(filename):
     for replicate in replicates:
         byReplicate = data[data[REPLICATE] == replicate]
 
-        # Load the relevent data for each district
+        # Load the relevant data for each district
         for district in rwanda.DISTRICTS:
             byDistrict = byReplicate[byReplicate[DISTRICT] == district]
 
@@ -78,27 +110,27 @@ def prepare(filename):
     return dates, districtData
 
 
-def report(title, dates, districtData):
-    for district in rwanda.DISTRICTS:
-        rwanda.plot_summary(title, dates, districtData[district], district=district)
-        progressBar(district, len(rwanda.DISTRICTS))
-
-
-def plot_spikes(filename, extension):
+def plot_spikes(filename, rate, prefix, suffix, extension):
     LOCATIONS = {
-        8: [0, 0],  3: [0, 1],
-        9: [1, 0], 10: [1, 1], 17: [1, 2],
+        8: [0, 0], 3: [0, 1], 17: [0, 2],
+        4: [1, 0], 5: [1, 1], 
     }
+    DHS_DATA = np.array([
+        # Kirby et al. 2022
+        [4, 'Kirehe (0.056)', datetime.datetime(2015,9,30), 0.05556],
+        [5, 'Ngoma (0.019)', datetime.datetime(2015,9,30), 0.01923],
+    ])
 
-    # Get the unique spikes
+    # Get the clinical data
+    data_points = np.append(rwanda.SPIKES, DHS_DATA, axis=0)
     districts = []
-    for row in rwanda.SPIKES:
+    for row in data_points:
         if row[rwanda.SPIKE_DISTRICT] == 0: continue
         if row[rwanda.SPIKE_DISTRICT] not in districts:
             districts.append(row[rwanda.SPIKE_DISTRICT])
 
     # Generate the standard four-panel summary plot
-    dates, districtData = prepare(os.path.join('../Analysis/data/datasets', filename))
+    dates, districtData = prepare(filename)
     for id in districts:
         rwanda.plot_summary('District 561H Validation', dates, districtData[id], district=id, studies=True)
 
@@ -114,6 +146,7 @@ def plot_spikes(filename, extension):
     ymax = 0
     for id in districts:
         # Load the data and calculate the bounds      
+        if id not in LOCATIONS: continue
         row, col = LOCATIONS[id][0], LOCATIONS[id][1]
         axes[row, col], limit = rwanda.plot_data(districtData[id]['frequency'], dates, axes[row, col])
         axes[row, col].title.set_text(rwanda.DISTRICTS[id])
@@ -121,10 +154,9 @@ def plot_spikes(filename, extension):
         # Label the axis as needed
         plt.sca(axes[row, col])
         if col == 0: plt.ylabel('561H Frequency')
-        if row == 1: plt.xlabel('Model Year')
 
-        # Add the 561H data points if requested
-        for spikeId, label, x, y in rwanda.SPIKES:
+        # Add the 561H data points
+        for spikeId, label, x, y in data_points:           
             if id == spikeId:
                 plt.scatter(x, y, color='black', s=50)
                 match = re.search('(\d\.\d*)', label)
@@ -134,20 +166,24 @@ def plot_spikes(filename, extension):
         ymax = max(limit, ymax)
 
     # Format the subplots, hide the empty subplot
+    if ymax > 0.8: ymax = 1.0
     for ax in axes.flat:
         ax.set_ylim([0, ymax])
-        ax.set_xlim([datetime.datetime(2008, 1, 1), max(dates)])
-    axes[0, 2].set_visible(False)
+        ax.set_xlim([datetime.datetime(2014, 1, 1), max(dates)])
+    axes[1, 2].set_visible(False)
     
-    figure.suptitle('Districts with 561H Frequency Studies')
+    figure.suptitle('District 561H Frequency with {} {}'.format(rate, suffix))
     
     # Save the plot based upon the supplied extension
-    imagefile = 'plots/District Spikes.{}'.format(extension)
+    imagefile = 'plots/District {} {}.{}'.format(prefix, rate, extension)
     if 'tif' == extension:
         plt.savefig(imagefile, dpi=300, format="tiff", pil_kwargs={"compression": "tiff_lzw"})
+    elif 'svg' == extension:
+        plt.savefig(imagefile, dpi=1200, format="svg")
     else:
-        plt.savefig(imagefile)     
+        plt.savefig(imagefile, dpi=150)
+    plt.close()
 
 
 if __name__ == '__main__':
-    main()
+    main('png')

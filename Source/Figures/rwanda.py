@@ -8,23 +8,25 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import pandas as pd
 import re
 import sys
 
 # From the PSU-CIDD-MaSim-Support repository
 sys.path.insert(1, '../../PSU-CIDD-MaSim-Support/Python/include')
 from plotting import scale_luminosity
+from utility import progressBar
 
 
 DISTRICTS = {
     1  : 'Bugesera',
     2  : 'Gatsibo',
     3  : 'Kayonza',         # Studies
-    4  : 'Kirehe',
-    5  : 'Ngoma',
+    4  : 'Kirehe',          # DHS blood samples
+    5  : 'Ngoma',           # DHS blood samples
     6  : 'Nyagatare',
-    7  : 'Rwamagana',
-    8  : 'Gasabo',          # Studies / Spiked
+    7  : 'Rwamagana',       # Adjacent
+    8  : 'Gasabo',          # Adjacent / Spiked
     9  : 'Kicukiro',        # Studies
     10 : 'Nyarugenge',      # Studies
     11 : 'Burera',
@@ -52,8 +54,8 @@ DISTRICTS = {
 # Start of simulation
 STUDYDATE = '2003-1-1'
 
-# Date when the policy change is introduced in the simulation
-POLICYDATE = datetime.datetime(2023, 1, 1)
+# The population scaling that was applied to the configuration
+POPULATIONSCALING = 0.25
 
 # Reference date for replicate validation, note we are using the minimal
 # frequency for the reject threshold since there may have been spatial 
@@ -63,7 +65,7 @@ REFERENCEDISTRICT = 8
 REFERENCEFREQUENCY = 0.01
 
 # The path for the summary data set
-DATA_PATH = '../Analysis/data/datasets'
+DATA_PATH = '../Analysis/ms_data/{}/datasets'
 
 # The various configurations that are run for the simulation
 CONFIGURATIONS = {
@@ -78,6 +80,9 @@ CONFIGURATIONS = {
     'rwa-ae-al-5.csv'              : 'AL (Five Days)',
     'rwa-ae-al-3-2-1.csv'          : 'AL 3-2-1',
     'rwa-ae-al-3-2-2.csv'          : 'AL 3-2-2',
+
+    # Community based health-workers
+    'rwa-ae-al-3-4-3.csv'           : 'AL, 4-days rest, AL',
 
     # Multiple First-line Therapies
     'rwa-mft-al-asaq-0.25.csv'     : 'MFT AL (75%) + ASAQ (25%)',
@@ -103,6 +108,18 @@ CONFIGURATIONS = {
     # Triple-ACT
     'rwa-tact-alaq.csv'            : 'TACT AL + AQ',
     'rwa-tact-dhappqmq.csv'        : 'TACT DHA-PPQ + PQ',
+
+    # Sequential Treatments
+    'rwa-seq-al-asaq.csv'          : 'AL then ASAQ',
+    'rwa-seq-al-dhappq.csv'        : 'AL then DHA-PPQ',
+    'rwa-seq-dhappq-al.csv'        : 'DHA-PPQ then AL',
+    'rwa-seq-asaq-al.csv'          : 'ASAQ then AL',
+
+    # Sequential Treatments with four day pause
+    'rwa-seq-al-asaq-pause.csv'    : 'AL, 4-day pause, then ASAQ',
+    'rwa-seq-al-dhappq-pause.csv'  : 'AL, 4-day pause, then DHA-PPQ',
+    'rwa-seq-dhappq-al-pause.csv'  : 'DHA-PPQ, 4-day pause, then AL',
+    'rwa-seq-asaq-al-pause.csv'    : 'ASAQ, 4-day pause, then AL',
 
     # NMCP
     'rwa-nmcp-1a.csv'              : 'NMCP Scenario 1a',
@@ -138,27 +155,27 @@ CONFIGURATIONS = {
     'rwa-dhappq-low.csv'      : 'DHA-PPQ, Low',
 }
 
-# Index defintions for spikes
+# Index definitions for spikes
 SPIKE_DISTRICT, SPIKE_LABEL, SPIKE_X, SPIKE_Y = range(4)
 
 # Points at which 561H was spiked into the population
 SPIKES = np.array([
     # Uwimana et al. 2020 
-    [8, 'Gasabo (0.12069)', datetime.datetime(2014,9,30), 0.12069],
-    [3, 'Kayonza (0.00746)', datetime.datetime(2015,9,30), 0.00746],
-    [8, 'Gasabo (0.0603)', datetime.datetime(2015,9,30), 0.0603],
+    [8, 'Gasabo (0.121)', datetime.datetime(2014,9,30), 0.12069],
+    [3, 'Kayonza (0.007)', datetime.datetime(2015,9,30), 0.00746],
+    [8, 'Gasabo (0.060)', datetime.datetime(2015,9,30), 0.0603],
     
     # Uwimana et al. 2021
-    [8, 'Gasabo (0.19608)', datetime.datetime(2018,9,30), 0.19608],
-    [3, 'Kayonza (0.09756)', datetime.datetime(2018,9,30), 0.09756],
+    [8, 'Gasabo (0.196)', datetime.datetime(2018,9,30), 0.19608],
+    [3, 'Kayonza (0.098)', datetime.datetime(2018,9,30), 0.09756],
 
     # Straimer et al. 2021, note 
-    [8, 'Kigali City (0.21918)', datetime.datetime(2019,9,30), 0.21918],
-    [9, 'Kigali City (0.21918)', datetime.datetime(2019,9,30), 0.21918],
-    [10, 'Kigali City (0.21918)', datetime.datetime(2019,9,30), 0.21918],
+    [8, 'Kigali City (0.219)', datetime.datetime(2019,9,30), 0.21918],
+    [9, 'Kigali City (0.219)', datetime.datetime(2019,9,30), 0.21918],
+    [10, 'Kigali City (0.219)', datetime.datetime(2019,9,30), 0.21918],
 
     # Bergmann et al. 2021 
-    [17, 'Hyue (0.12069)', datetime.datetime(2019,9,30), 0.12121],
+    [17, 'Hyue (0.045)', datetime.datetime(2019,9,30), 0.04545],
 ])
 
 # Index definitions for the four-panel report layout
@@ -167,9 +184,15 @@ REPORT_INDEX, REPORT_ROW, REPORT_COLUMN, REPORT_YLABEL = range(4)
 # Four-panel report layout
 REPORT_LAYOUT = {
     'cases': [5, 0, 0, 'Clinical Cases'],
-    'failures': [9, 1, 0, 'Treatment Failures'], 
+    'failures': [10, 1, 0, 'Treatment Failures'], 
     'frequency' : [-1, 0, 1, '561H Frequency'],
-    'carriers': [10, 1, 1, 'Individuals with 561H Clones']
+    'carriers': [11, 1, 1, 'Individuals with 561H Clones'],
+
+    # Sentinel used to store data to calculate the average monthly treatment failures
+    'monthly_failures': [10, 1, 0, 'Treatment Failures, Count'], 
+
+    # Sentinel used to store data to calculate percent treatment failures
+    'treatments' : [9, -1, -1, 'Treatments']
 }
 
 
@@ -196,6 +219,9 @@ def plot_summary(title, dates, figureData, district = None, studies = False, ext
     figure, axes = plt.subplots(2, 2)
 
     for key in REPORT_LAYOUT:
+        # Pass on the treatments sentinel, otherwise note the row and column
+        if key == 'treatments':
+            continue
         row, col = REPORT_LAYOUT[key][REPORT_ROW], REPORT_LAYOUT[key][REPORT_COLUMN]
 
         # Load the data and calculate the bounds      
@@ -242,3 +268,71 @@ def plot_summary(title, dates, figureData, district = None, studies = False, ext
     else:
         plt.savefig(imagefile)        
     plt.close()
+
+
+def plot_validation(datafile, imagefile, title='Rwanda 561H Frequency Validation'):
+    # Prepare the data
+    dates, frequencies = prepare_validation(datafile)
+
+    # Format the dates
+    startDate = datetime.datetime.strptime(STUDYDATE, "%Y-%m-%d")
+    dates = [startDate + datetime.timedelta(days=x) for x in dates]
+
+    # Calculate the bounds
+    upper = np.percentile(frequencies, 97.5, axis=0)
+    median = np.percentile(frequencies, 50, axis=0)
+    lower = np.percentile(frequencies, 2.5, axis=0)
+
+    # Format the plot
+    matplotlib.rc_file('matplotlibrc-line')
+    axes = plt.axes()
+    axes.set_xlim([min(dates), max(dates)])
+    axes.set_ylim([0, 1.0])
+    axes.set_title(title)
+    axes.set_ylabel('561H Genotype Frequency')
+
+    # Plot the 561H frequency
+    plt.plot(dates, median)
+    color = scale_luminosity(plt.gca().lines[-1].get_color(), 1)
+    plt.fill_between(dates, lower, upper, alpha=0.5, facecolor=color)
+
+    # Add the spike annotations
+    plt.scatter(SPIKES[:, SPIKE_X], SPIKES[:, SPIKE_Y], color='black', s=50)
+    for district, label, x, y in SPIKES:
+        plt.annotate(label, (x, y), textcoords='offset points', xytext=(0,10), ha='center', fontsize=18)
+
+    # Finalize the image as proof (png) or print (tif)
+    if imagefile.endswith('tif'):
+        plt.savefig(imagefile, dpi=300, format="tiff", pil_kwargs={"compression": "tiff_lzw"})
+    elif imagefile.endswith('svg'):
+        plt.savefig(imagefile, dpi=1200, format="svg")
+    else:
+        plt.savefig(imagefile)
+    plt.close()    
+
+
+def prepare_validation(filename):
+    REPLICATE, DATES, INDIVIDUALS, WEIGHTED = 1, 2, 4, 8
+
+    # Load the data, note the unique dates, replicates
+    data = pd.read_csv(filename, header = None)
+    dates = data[DATES].unique().tolist()
+    replicates = data[REPLICATE].unique().tolist()
+
+    # Calculate the 561H frequency for each date, replicate
+    count, frequencies = 0, []
+    for replicate in replicates:
+        byReplicate = data[data[REPLICATE] == replicate]
+        frequency = []
+        for date in dates:
+            byDate = byReplicate[byReplicate[DATES] == date]
+            frequency.append(sum(byDate[WEIGHTED]) / sum(byDate[INDIVIDUALS]))
+        if len(frequencies) != 0: frequencies = np.vstack((frequencies, frequency))
+        else: frequencies = frequency
+
+        # Update the progress bar
+        count += 1
+        progressBar(count, len(replicates))
+
+    # Return the results
+    return dates, frequencies
