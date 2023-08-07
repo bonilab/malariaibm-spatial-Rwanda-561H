@@ -6,7 +6,7 @@
 
 # Overview
 
-This repository contains a frozen snapshot of the source code and intermediary files to accompany the manuscript by Zupko et al., which is currently in review. Due to the size of the intermediary data (688 MB, compressed) this repository uses [Git Large File Storage](https://git-lfs.github.com/) and may be limited in terms of bandwidth as a result. All studies run by the simulation use YAML files (in Studies) to provide the configuration and ASC files (in `Data/GIS`) for spatial data.
+This repository contains a frozen snapshot of the source code and intermediary files to accompany the manuscript by Zupko et al., currently in press with *Nature Medicine*. Due to the size of the intermediary data (479 MB, compressed) this repository uses [Git Large File Storage](https://git-lfs.github.com/) and may be limited in terms of bandwidth as a result. All studies run by the simulation use YAML files (in Studies) to provide the configuration and ASC files (in `Data/GIS`) for spatial data.
 
 Due to the complex nature of the simulation, [primary living documentation](https://github.com/rjzupkoii/PSU-CIDD-Malaria-Simulation) to build and run the simulation is hosted with the repository that contains active development. The version 4.1.4 code base was used to run all replicates for the studies presented in the manuscript.
 
