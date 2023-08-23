@@ -1,0 +1,340 @@
+----- Rank Sum vs. Status Quo (Year 5) -----
+vs. rwa-ae-al-3-1-1.csv
+	failures, sum: p = 0.0000 (log10 = -19.22); monthly: p = 0.0000 (log10 = -19.22); precent: p = 0.0000 (log10 = -19.46)
+	frequency: p = 0.0010 (log10 = -3.00)
+vs. rwa-ae-al-3-1-2.csv
+	failures, sum: p = 0.0000 (log10 = -30.80); monthly: p = 0.0000 (log10 = -30.80); precent: p = 0.0000 (log10 = -30.92)
+	frequency: p = 0.0000 (log10 = -8.74)
+vs. rwa-ae-al-3-2-1.csv
+	failures, sum: p = 0.0000 (log10 = -21.65); monthly: p = 0.0000 (log10 = -21.65); precent: p = 0.0000 (log10 = -21.61)
+	frequency: p = 0.0085 (log10 = -2.07)
+vs. rwa-ae-al-3-2-2.csv
+	failures, sum: p = 0.0000 (log10 = -30.65); monthly: p = 0.0000 (log10 = -30.65); precent: p = 0.0000 (log10 = -30.67)
+	frequency: p = 0.0000 (log10 = -8.08)
+vs. rwa-ae-al-3-4-3.csv
+	failures, sum: p = 0.0000 (log10 = -33.50); monthly: p = 0.0000 (log10 = -33.50); precent: p = 0.0000 (log10 = -33.50)
+	frequency: p = 0.0000 (log10 = -10.39)
+vs. rwa-ae-al-4.csv
+	failures, sum: p = 0.0000 (log10 = -21.30); monthly: p = 0.0000 (log10 = -21.30); precent: p = 0.0000 (log10 = -21.59)
+	frequency: p = 0.0044 (log10 = -2.36)
+vs. rwa-ae-al-5.csv
+	failures, sum: p = 0.0000 (log10 = -30.68); monthly: p = 0.0000 (log10 = -30.68); precent: p = 0.0000 (log10 = -30.78)
+	frequency: p = 0.0000 (log10 = -9.80)
+vs. rwa-al-3-high.csv
+	failures, sum: p = 0.1462 (log10 = -0.84); monthly: p = 0.1462 (log10 = -0.84); precent: p = 0.1130 (log10 = -0.95)
+	frequency: p = 0.9190 (log10 = -0.04)
+vs. rwa-al-3-low.csv
+	failures, sum: p = 0.0006 (log10 = -3.25); monthly: p = 0.0006 (log10 = -3.25); precent: p = 0.0002 (log10 = -3.73)
+	frequency: p = 0.6309 (log10 = -0.20)
+vs. rwa-al-3-moderate.csv
+	failures, sum: p = 0.0372 (log10 = -1.43); monthly: p = 0.0372 (log10 = -1.43); precent: p = 0.0153 (log10 = -1.82)
+	frequency: p = 0.5017 (log10 = -0.30)
+vs. rwa-al-4-high.csv
+	failures, sum: p = 0.0000 (log10 = -9.10); monthly: p = 0.0000 (log10 = -9.10); precent: p = 0.0000 (log10 = -9.13)
+	frequency: p = 0.0065 (log10 = -2.19)
+vs. rwa-al-4-low.csv
+	failures, sum: p = 0.6309 (log10 = -0.20); monthly: p = 0.6309 (log10 = -0.20); precent: p = 0.8436 (log10 = -0.07)
+	frequency: p = 0.0591 (log10 = -1.23)
+vs. rwa-al-4-moderate.csv
+	failures, sum: p = 0.0064 (log10 = -2.19); monthly: p = 0.0064 (log10 = -2.19); precent: p = 0.0081 (log10 = -2.09)
+	frequency: p = 0.0402 (log10 = -1.40)
+vs. rwa-al-5-high.csv
+	failures, sum: p = 0.0000 (log10 = -17.00); monthly: p = 0.0000 (log10 = -17.00); precent: p = 0.0000 (log10 = -17.08)
+	frequency: p = 0.0000 (log10 = -4.38)
+vs. rwa-al-5-low.csv
+	failures, sum: p = 0.0000 (log10 = -5.76); monthly: p = 0.0000 (log10 = -5.76); precent: p = 0.0000 (log10 = -5.46)
+	frequency: p = 0.0153 (log10 = -1.82)
+vs. rwa-al-5-moderate.csv
+	failures, sum: p = 0.0000 (log10 = -13.57); monthly: p = 0.0000 (log10 = -13.57); precent: p = 0.0000 (log10 = -13.67)
+	frequency: p = 0.0000 (log10 = -4.51)
+vs. rwa-asaq-high.csv
+	failures, sum: p = 0.0000 (log10 = -20.29); monthly: p = 0.0000 (log10 = -20.29); precent: p = 0.0000 (log10 = -20.10)
+	frequency: p = 0.0000 (log10 = -9.62)
+vs. rwa-asaq-low.csv
+	failures, sum: p = 0.0000 (log10 = -18.93); monthly: p = 0.0000 (log10 = -18.93); precent: p = 0.0000 (log10 = -18.55)
+	frequency: p = 0.0000 (log10 = -9.86)
+vs. rwa-asaq-moderate.csv
+	failures, sum: p = 0.0000 (log10 = -19.46); monthly: p = 0.0000 (log10 = -19.46); precent: p = 0.0000 (log10 = -19.24)
+	frequency: p = 0.0000 (log10 = -8.17)
+vs. rwa-dhappq-0.25.csv
+	failures, sum: p = 0.0000 (log10 = -21.84); monthly: p = 0.0000 (log10 = -21.84); precent: p = 0.0000 (log10 = -22.08)
+	frequency: p = 0.0002 (log10 = -3.68)
+vs. rwa-dhappq-0.5.csv
+	failures, sum: p = 0.0000 (log10 = -22.67); monthly: p = 0.0000 (log10 = -22.67); precent: p = 0.0000 (log10 = -22.67)
+	frequency: p = 0.0000 (log10 = -10.59)
+vs. rwa-dhappq-1.25.csv
+	failures, sum: p = 0.0000 (log10 = -21.01); monthly: p = 0.0000 (log10 = -21.01); precent: p = 0.0000 (log10 = -21.04)
+	frequency: p = 0.0000 (log10 = -10.54)
+vs. rwa-dhappq-1.5.csv
+	failures, sum: p = 0.0000 (log10 = -22.67); monthly: p = 0.0000 (log10 = -22.67); precent: p = 0.0000 (log10 = -22.67)
+	frequency: p = 0.0000 (log10 = -10.76)
+vs. rwa-dhappq-ec50-1.0.csv
+	failures, sum: p = 0.0000 (log10 = -15.92); monthly: p = 0.0000 (log10 = -15.92); precent: p = 0.0000 (log10 = -14.18)
+	frequency: p = 0.0000 (log10 = -4.59)
+vs. rwa-dhappq-ec50-1.1.csv
+	failures, sum: p = 0.0000 (log10 = -8.68); monthly: p = 0.0000 (log10 = -8.68); precent: p = 0.0000 (log10 = -10.86)
+	frequency: p = 0.3793 (log10 = -0.42)
+vs. rwa-dhappq-ec50-1.2.csv
+	failures, sum: p = 0.0000 (log10 = -21.11); monthly: p = 0.0000 (log10 = -21.11); precent: p = 0.0000 (log10 = -21.16)
+	frequency: p = 0.0029 (log10 = -2.53)
+vs. rwa-dhappq-ec50-1.3.csv
+	failures, sum: p = 0.0000 (log10 = -22.67); monthly: p = 0.0000 (log10 = -22.67); precent: p = 0.0000 (log10 = -22.67)
+	frequency: p = 0.0000 (log10 = -10.69)
+vs. rwa-dhappq-ec50-1.5.csv
+	failures, sum: p = 0.0000 (log10 = -22.67); monthly: p = 0.0000 (log10 = -22.67); precent: p = 0.0000 (log10 = -22.67)
+	frequency: p = 0.0000 (log10 = -13.00)
+vs. rwa-dhappq-ec50-1.6.csv
+	failures, sum: p = 0.0000 (log10 = -22.67); monthly: p = 0.0000 (log10 = -22.67); precent: p = 0.0000 (log10 = -22.67)
+	frequency: p = 0.0000 (log10 = -17.20)
+vs. rwa-dhappq-high.csv
+	failures, sum: p = 0.0000 (log10 = -21.06); monthly: p = 0.0000 (log10 = -21.06); precent: p = 0.0000 (log10 = -21.09)
+	frequency: p = 0.0000 (log10 = -10.12)
+vs. rwa-dhappq-low.csv
+	failures, sum: p = 0.0000 (log10 = -22.63); monthly: p = 0.0000 (log10 = -22.63); precent: p = 0.0000 (log10 = -22.63)
+	frequency: p = 0.0000 (log10 = -13.28)
+vs. rwa-dhappq-moderate.csv
+	failures, sum: p = 0.0000 (log10 = -22.25); monthly: p = 0.0000 (log10 = -22.25); precent: p = 0.0000 (log10 = -22.53)
+	frequency: p = 0.0000 (log10 = -12.90)
+vs. rwa-mft-al-asaq-0.25.csv
+	failures, sum: p = 0.0000 (log10 = -19.23); monthly: p = 0.0000 (log10 = -19.23); precent: p = 0.0000 (log10 = -18.68)
+	frequency: p = 0.0016 (log10 = -2.80)
+vs. rwa-mft-al-asaq-0.75.csv
+	failures, sum: p = 0.0000 (log10 = -30.65); monthly: p = 0.0000 (log10 = -30.65); precent: p = 0.0000 (log10 = -30.26)
+	frequency: p = 0.0000 (log10 = -9.78)
+vs. rwa-mft-al-asaq.csv
+	failures, sum: p = 0.0000 (log10 = -27.79); monthly: p = 0.0000 (log10 = -27.79); precent: p = 0.0000 (log10 = -27.52)
+	frequency: p = 0.0000 (log10 = -7.67)
+vs. rwa-mft-al-dhappq-0.25.csv
+	failures, sum: p = 0.0000 (log10 = -20.42); monthly: p = 0.0000 (log10 = -20.42); precent: p = 0.0000 (log10 = -19.07)
+	frequency: p = 0.0057 (log10 = -2.25)
+vs. rwa-mft-al-dhappq-0.75.csv
+	failures, sum: p = 0.0000 (log10 = -33.02); monthly: p = 0.0000 (log10 = -33.02); precent: p = 0.0000 (log10 = -33.12)
+	frequency: p = 0.0000 (log10 = -6.79)
+vs. rwa-mft-al-dhappq.csv
+	failures, sum: p = 0.1270 (log10 = -0.90); monthly: p = 0.1270 (log10 = -0.90); precent: p = 0.6805 (log10 = -0.17)
+	frequency: p = 0.2807 (log10 = -0.55)
+vs. rwa-mft-asaq-dhappq-0.25.csv
+	failures, sum: p = 0.0000 (log10 = -32.92); monthly: p = 0.0000 (log10 = -32.92); precent: p = 0.0000 (log10 = -32.55)
+	frequency: p = 0.0000 (log10 = -14.24)
+vs. rwa-mft-asaq-dhappq-0.75.csv
+	failures, sum: p = 0.0000 (log10 = -32.05); monthly: p = 0.0000 (log10 = -32.05); precent: p = 0.0000 (log10 = -32.09)
+	frequency: p = 0.0000 (log10 = -5.43)
+vs. rwa-mft-asaq-dhappq.csv
+	failures, sum: p = 0.0000 (log10 = -16.99); monthly: p = 0.0000 (log10 = -16.99); precent: p = 0.0000 (log10 = -14.87)
+	frequency: p = 0.0000 (log10 = -6.14)
+vs. rwa-pfpr-constant.csv
+	failures, sum: p = 1.0000 (log10 = 0.00); monthly: p = 1.0000 (log10 = 0.00); precent: p = 1.0000 (log10 = 0.00)
+	frequency: p = 1.0000 (log10 = 0.00)
+vs. rwa-replacement-asaq.csv
+	failures, sum: p = 0.0000 (log10 = -30.60); monthly: p = 0.0000 (log10 = -30.60); precent: p = 0.0000 (log10 = -30.27)
+	frequency: p = 0.0000 (log10 = -13.26)
+vs. rwa-replacement-dhappq.csv
+	failures, sum: p = 0.0000 (log10 = -33.57); monthly: p = 0.0000 (log10 = -33.57); precent: p = 0.0000 (log10 = -33.57)
+	frequency: p = 0.0000 (log10 = -21.47)
+vs. rwa-rotation-al-3.csv
+	failures, sum: p = 0.0000 (log10 = -28.09); monthly: p = 0.0000 (log10 = -28.09); precent: p = 0.0000 (log10 = -27.60)
+	frequency: p = 0.0001 (log10 = -4.26)
+vs. rwa-rotation-al-5.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.52)
+	frequency: p = 0.0000 (log10 = -13.27)
+vs. rwa-seq-al-asaq-pause.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -23.65)
+vs. rwa-seq-al-asaq.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -26.04)
+vs. rwa-seq-al-dhappq-pause.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -21.85)
+vs. rwa-seq-al-dhappq.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -24.52)
+vs. rwa-seq-asaq-al-pause.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -24.46)
+vs. rwa-seq-asaq-al.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -26.91)
+vs. rwa-seq-dhappq-al-pause.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -13.07)
+vs. rwa-seq-dhappq-al.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -22.36)
+vs. rwa-tact-alaq.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -29.00)
+vs. rwa-tact-dhappqmq.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -27.66)
+
+
+----- Rank Sum vs. Status Quo (Year 10) -----
+vs. rwa-ae-al-3-1-1.csv
+	failures, sum: p = 0.0000 (log10 = -26.70); monthly: p = 0.0000 (log10 = -26.70); precent: p = 0.0000 (log10 = -26.91)
+	frequency: p = 0.0000 (log10 = -6.40)
+vs. rwa-ae-al-3-1-2.csv
+	failures, sum: p = 0.0000 (log10 = -33.11); monthly: p = 0.0000 (log10 = -33.11); precent: p = 0.0000 (log10 = -33.15)
+	frequency: p = 0.0000 (log10 = -17.88)
+vs. rwa-ae-al-3-2-1.csv
+	failures, sum: p = 0.0000 (log10 = -28.64); monthly: p = 0.0000 (log10 = -28.64); precent: p = 0.0000 (log10 = -28.75)
+	frequency: p = 0.0000 (log10 = -6.43)
+vs. rwa-ae-al-3-2-2.csv
+	failures, sum: p = 0.0000 (log10 = -33.16); monthly: p = 0.0000 (log10 = -33.16); precent: p = 0.0000 (log10 = -33.18)
+	frequency: p = 0.0000 (log10 = -17.31)
+vs. rwa-ae-al-3-4-3.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -21.82)
+vs. rwa-ae-al-4.csv
+	failures, sum: p = 0.0000 (log10 = -29.65); monthly: p = 0.0000 (log10 = -29.65); precent: p = 0.0000 (log10 = -29.92)
+	frequency: p = 0.0000 (log10 = -6.81)
+vs. rwa-ae-al-5.csv
+	failures, sum: p = 0.0000 (log10 = -33.44); monthly: p = 0.0000 (log10 = -33.44); precent: p = 0.0000 (log10 = -33.45)
+	frequency: p = 0.0000 (log10 = -18.54)
+vs. rwa-al-3-high.csv
+	failures, sum: p = 0.0334 (log10 = -1.48); monthly: p = 0.0334 (log10 = -1.48); precent: p = 0.0184 (log10 = -1.74)
+	frequency: p = 0.8969 (log10 = -0.05)
+vs. rwa-al-3-low.csv
+	failures, sum: p = 0.0000 (log10 = -5.22); monthly: p = 0.0000 (log10 = -5.22); precent: p = 0.0000 (log10 = -5.92)
+	frequency: p = 0.4310 (log10 = -0.37)
+vs. rwa-al-3-moderate.csv
+	failures, sum: p = 0.0020 (log10 = -2.70); monthly: p = 0.0020 (log10 = -2.70); precent: p = 0.0012 (log10 = -2.92)
+	frequency: p = 0.5945 (log10 = -0.23)
+vs. rwa-al-4-high.csv
+	failures, sum: p = 0.0000 (log10 = -13.87); monthly: p = 0.0000 (log10 = -13.87); precent: p = 0.0000 (log10 = -13.90)
+	frequency: p = 0.0000 (log10 = -4.30)
+vs. rwa-al-4-low.csv
+	failures, sum: p = 0.8906 (log10 = -0.05); monthly: p = 0.8906 (log10 = -0.05); precent: p = 0.8874 (log10 = -0.05)
+	frequency: p = 0.0239 (log10 = -1.62)
+vs. rwa-al-4-moderate.csv
+	failures, sum: p = 0.0023 (log10 = -2.64); monthly: p = 0.0023 (log10 = -2.64); precent: p = 0.0034 (log10 = -2.47)
+	frequency: p = 0.0144 (log10 = -1.84)
+vs. rwa-al-5-high.csv
+	failures, sum: p = 0.0000 (log10 = -21.04); monthly: p = 0.0000 (log10 = -21.04); precent: p = 0.0000 (log10 = -21.24)
+	frequency: p = 0.0000 (log10 = -9.10)
+vs. rwa-al-5-low.csv
+	failures, sum: p = 0.0000 (log10 = -7.82); monthly: p = 0.0000 (log10 = -7.82); precent: p = 0.0000 (log10 = -7.87)
+	frequency: p = 0.0005 (log10 = -3.30)
+vs. rwa-al-5-moderate.csv
+	failures, sum: p = 0.0000 (log10 = -17.70); monthly: p = 0.0000 (log10 = -17.70); precent: p = 0.0000 (log10 = -17.91)
+	frequency: p = 0.0000 (log10 = -6.74)
+vs. rwa-asaq-high.csv
+	failures, sum: p = 0.0000 (log10 = -22.67); monthly: p = 0.0000 (log10 = -22.67); precent: p = 0.0000 (log10 = -22.67)
+	frequency: p = 0.0000 (log10 = -15.26)
+vs. rwa-asaq-low.csv
+	failures, sum: p = 0.0000 (log10 = -22.61); monthly: p = 0.0000 (log10 = -22.61); precent: p = 0.0000 (log10 = -22.58)
+	frequency: p = 0.0000 (log10 = -14.58)
+vs. rwa-asaq-moderate.csv
+	failures, sum: p = 0.0000 (log10 = -22.67); monthly: p = 0.0000 (log10 = -22.67); precent: p = 0.0000 (log10 = -22.67)
+	frequency: p = 0.0000 (log10 = -13.86)
+vs. rwa-dhappq-0.25.csv
+	failures, sum: p = 0.0000 (log10 = -22.67); monthly: p = 0.0000 (log10 = -22.67); precent: p = 0.0000 (log10 = -22.67)
+	frequency: p = 0.0000 (log10 = -21.58)
+vs. rwa-dhappq-0.5.csv
+	failures, sum: p = 0.0000 (log10 = -22.67); monthly: p = 0.0000 (log10 = -22.67); precent: p = 0.0000 (log10 = -22.67)
+	frequency: p = 0.0000 (log10 = -21.82)
+vs. rwa-dhappq-1.25.csv
+	failures, sum: p = 0.0000 (log10 = -20.96); monthly: p = 0.0000 (log10 = -20.96); precent: p = 0.0000 (log10 = -20.96)
+	frequency: p = 0.0000 (log10 = -18.46)
+vs. rwa-dhappq-1.5.csv
+	failures, sum: p = 0.0000 (log10 = -22.67); monthly: p = 0.0000 (log10 = -22.67); precent: p = 0.0000 (log10 = -22.67)
+	frequency: p = 0.0000 (log10 = -19.61)
+vs. rwa-dhappq-ec50-1.0.csv
+	failures, sum: p = 0.0000 (log10 = -6.39); monthly: p = 0.0000 (log10 = -6.39); precent: p = 0.4036 (log10 = -0.39)
+	frequency: p = 0.0129 (log10 = -1.89)
+vs. rwa-dhappq-ec50-1.1.csv
+	failures, sum: p = 0.0000 (log10 = -19.00); monthly: p = 0.0000 (log10 = -19.00); precent: p = 0.0000 (log10 = -21.38)
+	frequency: p = 0.0000 (log10 = -6.30)
+vs. rwa-dhappq-ec50-1.2.csv
+	failures, sum: p = 0.0000 (log10 = -22.67); monthly: p = 0.0000 (log10 = -22.67); precent: p = 0.0000 (log10 = -22.67)
+	frequency: p = 0.0000 (log10 = -16.69)
+vs. rwa-dhappq-ec50-1.3.csv
+	failures, sum: p = 0.0000 (log10 = -22.67); monthly: p = 0.0000 (log10 = -22.67); precent: p = 0.0000 (log10 = -22.67)
+	frequency: p = 0.0000 (log10 = -21.53)
+vs. rwa-dhappq-ec50-1.5.csv
+	failures, sum: p = 0.0000 (log10 = -22.67); monthly: p = 0.0000 (log10 = -22.67); precent: p = 0.0000 (log10 = -22.67)
+	frequency: p = 0.0000 (log10 = -21.96)
+vs. rwa-dhappq-ec50-1.6.csv
+	failures, sum: p = 0.0000 (log10 = -22.67); monthly: p = 0.0000 (log10 = -22.67); precent: p = 0.0000 (log10 = -22.67)
+	frequency: p = 0.0000 (log10 = -22.51)
+vs. rwa-dhappq-high.csv
+	failures, sum: p = 0.0000 (log10 = -20.96); monthly: p = 0.0000 (log10 = -20.96); precent: p = 0.0000 (log10 = -20.97)
+	frequency: p = 0.0000 (log10 = -17.95)
+vs. rwa-dhappq-low.csv
+	failures, sum: p = 0.0000 (log10 = -22.67); monthly: p = 0.0000 (log10 = -22.67); precent: p = 0.0000 (log10 = -22.67)
+	frequency: p = 0.0000 (log10 = -20.82)
+vs. rwa-dhappq-moderate.csv
+	failures, sum: p = 0.0000 (log10 = -22.67); monthly: p = 0.0000 (log10 = -22.67); precent: p = 0.0000 (log10 = -22.67)
+	frequency: p = 0.0000 (log10 = -18.82)
+vs. rwa-mft-al-asaq-0.25.csv
+	failures, sum: p = 0.0000 (log10 = -32.96); monthly: p = 0.0000 (log10 = -32.96); precent: p = 0.0000 (log10 = -32.76)
+	frequency: p = 0.0000 (log10 = -11.02)
+vs. rwa-mft-al-asaq-0.75.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -23.83)
+vs. rwa-mft-al-asaq.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -21.68)
+vs. rwa-mft-al-dhappq-0.25.csv
+	failures, sum: p = 0.0000 (log10 = -22.41); monthly: p = 0.0000 (log10 = -22.41); precent: p = 0.0000 (log10 = -20.44)
+	frequency: p = 0.0000 (log10 = -6.09)
+vs. rwa-mft-al-dhappq-0.75.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -28.70)
+vs. rwa-mft-al-dhappq.csv
+	failures, sum: p = 0.0000 (log10 = -32.76); monthly: p = 0.0000 (log10 = -32.76); precent: p = 0.0000 (log10 = -33.29)
+	frequency: p = 0.0000 (log10 = -7.27)
+vs. rwa-mft-asaq-dhappq-0.25.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -23.34)
+vs. rwa-mft-asaq-dhappq-0.75.csv
+	failures, sum: p = 0.0000 (log10 = -33.60); monthly: p = 0.0000 (log10 = -33.60); precent: p = 0.0000 (log10 = -33.60)
+	frequency: p = 0.0000 (log10 = -28.05)
+vs. rwa-mft-asaq-dhappq.csv
+	failures, sum: p = 0.0000 (log10 = -25.70); monthly: p = 0.0000 (log10 = -25.70); precent: p = 0.0000 (log10 = -28.77)
+	frequency: p = 0.6645 (log10 = -0.18)
+vs. rwa-pfpr-constant.csv
+	failures, sum: p = 1.0000 (log10 = 0.00); monthly: p = 1.0000 (log10 = 0.00); precent: p = 1.0000 (log10 = 0.00)
+	frequency: p = 1.0000 (log10 = 0.00)
+vs. rwa-replacement-asaq.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -21.99)
+vs. rwa-replacement-dhappq.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -31.59)
+vs. rwa-rotation-al-3.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -20.19)
+vs. rwa-rotation-al-5.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -27.12)
+vs. rwa-seq-al-asaq-pause.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -32.60)
+vs. rwa-seq-al-asaq.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -33.46)
+vs. rwa-seq-al-dhappq-pause.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -29.27)
+vs. rwa-seq-al-dhappq.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -31.02)
+vs. rwa-seq-asaq-al-pause.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -33.18)
+vs. rwa-seq-asaq-al.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -33.46)
+vs. rwa-seq-dhappq-al-pause.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -5.38)
+vs. rwa-seq-dhappq-al.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -23.54)
+vs. rwa-tact-alaq.csv
+	failures, sum: p = 0.0000 (log10 = -33.59); monthly: p = 0.0000 (log10 = -33.59); precent: p = 0.0000 (log10 = -33.59)
+	frequency: p = 0.0000 (log10 = -33.59)
+vs. rwa-tact-dhappqmq.csv
+	failures, sum: p = 0.0000 (log10 = -31.85); monthly: p = 0.0000 (log10 = -31.85); precent: p = 0.0000 (log10 = -27.32)
+	frequency: p = 0.0000 (log10 = -23.64)
