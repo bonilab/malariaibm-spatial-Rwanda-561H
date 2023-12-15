@@ -14,7 +14,7 @@ Due to the complex nature of the simulation, [primary living documentation](http
 
 Please cite the manuscript as follows:
 
-Zupko, R. J., Nguyen, T. D., Ngabonziza, J. C. S., Kabera, M., Li, H., Tran, T. N.-A., Tran, K. T., Uwimana, A., & Boni, M. F. (2023). Modeling policy interventions for slowing the spread of artemisinin-resistant pfkelch R561H mutations in Rwanda. *Nature Medicine*. https://doi.org/10.1038/s41591-023-02551-w
+Zupko, R. J., Nguyen, T. D., Ngabonziza, J. C. S., Kabera, M., Li, H., Tran, T. N.-A., Tran, K. T., Uwimana, A., & Boni, M. F. (2023). Modeling policy interventions for slowing the spread of artemisinin-resistant pfkelch R561H mutations in Rwanda. *Nature Medicine*, 29, 2775-2784. https://doi.org/10.1038/s41591-023-02551-w
 
 ## Organization
 
